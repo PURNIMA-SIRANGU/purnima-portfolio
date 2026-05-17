@@ -5,7 +5,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 export default function PremiumAboutPage() {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   
   const [profile, setProfile] = useState({
     fullName: "Purnima Sirangu",
@@ -56,7 +56,7 @@ export default function PremiumAboutPage() {
 
   // Spatial Cursor Coordinate Tracking Engine
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef || !containerRef.current) return;
       const { clientX, clientY } = e;
       containerRef.current.style.setProperty("--mouse-x", `${clientX}px`);
