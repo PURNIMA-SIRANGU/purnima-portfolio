@@ -60,7 +60,7 @@ export default function EigerLoader({ onComplete }) {
       {/* TACTICAL RUNTIME DATA MARKS */}
       <div className="absolute bottom-12 font-mono text-[9px] tracking-[0.5em] text-zinc-600 uppercase flex items-center gap-2">
         <span className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-pulse" />
-        CORE_BOOT // TRACK_SEQUENCE_0{currentIdx + 1}
+        {"\\/{ }@:@! &@=<<"} {currentIdx + 1}
       </div>
     </div>
   );
