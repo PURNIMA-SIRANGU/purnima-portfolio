@@ -74,21 +74,29 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser && currentUser.email === ALLOWED_ADMIN_EMAIL) {
-        setUser(currentUser);
-        setError("");
-      } else if (currentUser) {
-        setError("Access Denied: Unauthorized account configuration detected.");
-        signOut(auth);
-        setUser(null);
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    // 🛠️ 1. Check if the user matches any of your whitelisted emails
+    const isAllowedAdmin = currentUser && (
+      currentUser.email === ALLOWED_ADMIN_EMAIL || 
+      currentUser.email === "maladipavanteja@gmail.com" || 
+      currentUser.email === "your-third-email@gmail.com"
+    );
+
+    if (isAllowedAdmin) {
+      setUser(currentUser);
+      setError("");
+    } else if (currentUser) {
+      // 🛠️ 2. This now only runs if the email is truly a stranger!
+      setError("Access Denied: Unauthorized account configuration detected.");
+      signOut(auth);
+      setUser(null);
+    } else {
+      setUser(null);
+    }
+    setLoading(false);
+  });
+  return () => unsubscribe();
+}, []);
 
   useEffect(() => {
     if (!user) return;

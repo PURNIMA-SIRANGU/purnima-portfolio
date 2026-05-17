@@ -34,7 +34,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
       suppressHydrationWarning 
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="bg-zinc-950 text-zinc-100 antialiased selection:bg-cyan-500 selection:text-black min-h-screen flex flex-col">
+      <body 
+      suppressHydrationWarning={true}
+      className="bg-zinc-950 text-zinc-100 antialiased selection:bg-cyan-500 selection:text-black min-h-screen flex flex-col">
         {/* Navbar component */}
         <Navbar />
         
