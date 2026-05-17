@@ -22,7 +22,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md font-sans transition-all">
+   <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-zinc-900 bg-zinc-950/70 backdrop-blur-md font-sans transition-all">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         
         {/* BRAND IDENTITY KEY LOGO - UNCHANGED */}
