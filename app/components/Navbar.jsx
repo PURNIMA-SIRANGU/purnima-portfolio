@@ -66,7 +66,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* 📱 NEW MOBILE LAYOUT MODULE - ONLY SHOWS ON MOBILE VIEWS */}
+        {/* 📱 MOBILE LAYOUT MODULE - ONLY SHOWS ON MOBILE VIEWS */}
         <div className="md:hidden flex items-center">
           {/* Circular Menu Toggle Button */}
           <button
@@ -85,14 +85,15 @@ export default function Navbar() {
 
       </div>
 
-      {/* 📱 MOBILE SIDE PANEL DRAWER OVERLAY */}
+      {/* 📱 MOBILE SIDE PANEL DRAWER OVERLAY - Fixed to handle horizontal overflow shifts */}
       <div
-        className={`fixed top-0 right-0 h-screen w-full max-w-xs bg-zinc-950/95 border-l border-zinc-900 backdrop-blur-lg p-6 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out flex flex-col gap-6 md:hidden ${
+        className={`fixed top-0 right-0 h-screen w-full max-w-xs bg-zinc-950/95 border-l border-zinc-900 backdrop-blur-lg p-6 shadow-2xl z-[999] transform to-gpu transition-transform duration-300 ease-in-out flex flex-col gap-6 md:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
+        style={{ height: '100dvh' }} // Forces dynamic mobile layout viewport locking
       >
         {/* Mobile Panel Header Controls */}
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-900">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-900 shrink-0">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
             <span className="text-xs font-black tracking-widest uppercase text-zinc-400">MENU // CORE</span>
@@ -106,7 +107,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Vertical Navigation Directory */}
-        <nav className="flex flex-col gap-2 overflow-y-auto pr-2">
+        <nav className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2 grow custom-scrollbar">
           {navLinks.map((link) => {
             const isActive = pathname === link.path;
             return (
@@ -114,7 +115,7 @@ export default function Navbar() {
                 key={link.path}
                 href={link.path}
                 onClick={toggleMenu}
-                className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
+                className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wider uppercase transition-all duration-300 block ${
                   isActive
                     ? "bg-zinc-900 border border-zinc-800 text-cyan-400"
                     : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/30"
