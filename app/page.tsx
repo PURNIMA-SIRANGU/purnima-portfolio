@@ -213,9 +213,9 @@ export default function Home() {
                     {profile.fullName.split(" ").slice(1).join(" ")}
                   </span>
                 </h1>
-                <p className="font-mono text-[50px] md:text-xs text-zinc-10 uppercase tracking-[0.3em] pl-2 pt-2">
-                  {profile.specialization}
-                </p>
+               <p className="font-mono text-[11px] sm:text-xs md:text-xs text-zinc-100 uppercase tracking-[0.3em] pl-2 pt-2">
+  {profile.specialization}
+</p>
               </div>
 
               {/* 🛡️ GLASSMORPHIC PROTECTIVE VISOR WRAPPER */}
