@@ -45,6 +45,8 @@ export default function ProjectsPage() {
         
         {/* PAGE HEADER */}
         <header className="mb-16 border-b border-zinc-900 pb-8">
+          <br></br>
+          <br></br>
           <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
             Project Hub
           </h1>

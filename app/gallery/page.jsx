@@ -52,6 +52,8 @@ export default function GalleryPage() {
         {/* HEADER */}
         <header className="mb-12 text-center md:text-left border-b border-zinc-900 pb-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <div>
+            <br></br>
+          <br></br>
             <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-teal-400 to-purple-400 bg-clip-text text-transparent">
               Art Gallery
             </h1>
