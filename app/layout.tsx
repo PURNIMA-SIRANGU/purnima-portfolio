@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "AI Ecosystem Portfolio",
   description: "Next-gen Cloud Architecture Deployment Showcase",
+  // 🆕 Integrated your Google Search Console verification code safely here
+  verification: {
+    google: "kM6RjFintIF-6FRFBZsvBgq-7s0TxYRw_I-AplX7Al8",
+  },
 };
 
 // Add explicit type definition for layout props
