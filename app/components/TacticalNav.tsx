@@ -162,7 +162,7 @@ export default function TacticalNavHub() {
         </h2>
       </div>
 
-      <TacticalNavRow leftSlotKey="academic" leftHref="/credentials" rightSlotKey="experience" rightHref="/credentials" liveMap={liveMap} />
+      <TacticalNavRow leftSlotKey="academic" leftHref="/about" rightSlotKey="experience" rightHref="/roadmap" liveMap={liveMap} />
       <TacticalNavRow leftSlotKey="projects" leftHref="/projects" rightSlotKey="blog" rightHref="/blog" liveMap={liveMap} />
       <TacticalNavRow leftSlotKey="dsa" leftHref="/logs" rightSlotKey="art" rightHref="/gallery" liveMap={liveMap} />
     </div>
