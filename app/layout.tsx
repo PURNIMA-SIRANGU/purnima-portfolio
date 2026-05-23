@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Purnima Sirangu Portfolio",
   description: "B.Tech AI & Data Science Student | Full-Stack Developer & AI Engineer specializing in Next.js, Firebase, and Intelligent Systems.",
-
+  applicationName: "Purnima Sirangu",
   verification: {
     google: "kM6RjFintIF-6FRFBZsvBgq-7s0TxYRw_I-AplX7Al8",
   },
