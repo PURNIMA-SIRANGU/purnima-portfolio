@@ -46,9 +46,17 @@ export default function AdminPage() {
     resumeUrl: "", profileImageUrl: ""
   });
 
-  const [expForm, setExpForm] = useState({
-    title: "", organization: "", type: "internship", duration: "", whatIDid: "", whatILearned: "", perks: "", verifyUrl: "", certImageUrl: ""
-  });
+ const [expForm, setExpForm] = useState({
+  title: "", 
+  organization: "", 
+  type: "internship", 
+  duration: "", 
+  projectScope: "",     // New distinct field
+  coreKnowledge: "",    // New distinct field
+  accolades: "",        // New distinct field
+  verifyUrl: "",        // Your Live Verification Link field
+  certImageUrl: ""
+});
 
   const [roadmapForm, setRoadmapForm] = useState({
     title: "", organization: "", duration: "", location: "Remote", scope: "", vectors: ""
@@ -246,10 +254,21 @@ export default function AdminPage() {
         const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
         const data = await res.json(); currentCertUrl = data.secure_url;
       }
-      const payload = { ...expForm, certImageUrl: currentCertUrl, updatedAt: serverTimestamp() };
+
+      const payload = {
+        title: expForm.title,
+        organization: expForm.organization,
+        type: expForm.type,
+        duration: expForm.duration,
+        verifyUrl: expForm.verifyUrl, 
+        certImageUrl: currentCertUrl,
+        updatedAt: serverTimestamp(),
+        whatIDid: `Project Implementation & Scope:\n${expForm.projectScope}\n\nCore Knowledge Acquired:\n${expForm.coreKnowledge}\n\nValidation Accolades & Badges:\n${expForm.accolades}`
+      };
       if (editingExpId) { await updateDoc(doc(db, "experiences", editingExpId), payload); setEditingExpId(null); }
       else { await addDoc(collection(db, "experiences"), { ...payload, createdAt: serverTimestamp() }); }
-      setExpForm({ title: "", organization: "", type: "internship", duration: "", whatIDid: "", whatILearned: "", perks: "", verifyUrl: "", certImageUrl: "" }); e.target.reset();
+      // ✅ Update the reset state line inside handleExpSubmit to this:
+setExpForm({ title: "", organization: "", type: "internship", duration: "", projectScope: "", coreKnowledge: "", accolades: "", verifyUrl: "", certImageUrl: "" }); e.target.reset();
       setFormSuccess("Credential credential locked!");
     } catch { setError("Database writing fault."); } finally { setFormLoading(false); }
   };
@@ -435,17 +454,42 @@ export default function AdminPage() {
                     <input type="text" required placeholder="Role Title" value={expForm.title} onChange={e => setExpForm({...expForm, title: e.target.value})} className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm" />
                     <input type="text" required placeholder="Organization" value={expForm.organization} onChange={e => setExpForm({...expForm, organization: e.target.value})} className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm" />
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <select value={expForm.type} onChange={e => setExpForm({...expForm, type: e.target.value})} className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm"><option value="internship">Internship Assignment</option><option value="certification">Certification Validation</option></select>
-                    <input type="text" required placeholder="Duration" value={expForm.duration} onChange={e => setExpForm({...expForm, duration: e.target.value})} className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm" />
+                  // ✅ PASTE THESE 4 INPUT BOXES DIRECTLY INTO THAT GAP:
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-mono font-bold uppercase text-purple-400 mb-2">Project Implementation & Scope:</label>
+                      <textarea required rows={3} placeholder="• Bullet points detailing the project scope parameters..." value={expForm.projectScope} onChange={e => setExpForm({...expForm, projectScope: e.target.value})} className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm focus:outline-none focus:border-purple-500" />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono font-bold uppercase text-purple-400 mb-2">Core Knowledge Acquired:</label>
+                      <textarea required rows={3} placeholder="• Core architectural or design principles mastered..." value={expForm.coreKnowledge} onChange={e => setExpForm({...expForm, coreKnowledge: e.target.value})} className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm focus:outline-none focus:border-purple-500" />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono font-bold uppercase text-purple-400 mb-2">Validation Accolades & Badges:</label>
+                      <textarea required rows={2} placeholder="• Achievements, rank arrays, or specific medal badges..." value={expForm.accolades} onChange={e => setExpForm({...expForm, accolades: e.target.value})} className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm focus:outline-none focus:border-purple-500" />
+                    </div>
+
+                    // ✅ CHANGE IT TO THIS:
+                    <div>
+                      <label className="block text-xs font-mono font-bold uppercase text-cyan-400 mb-2">Live Verification Link</label>
+                      <input type="url" required placeholder="https://verification-authority.com/cert/id" value={expForm.verifyUrl} onChange={e => setExpForm({...expForm, verifyUrl: e.target.value})} className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 text-sm focus:outline-none focus:border-cyan-500" />
+                    </div>
                   </div>
-                  <textarea required rows={3} placeholder="Deconstruct your core contributions..." value={expForm.whatIDid} onChange={e => setExpForm({...expForm, whatIDid: e.target.value})} className="w-full rounded-xl border border-zinc-900/50 p-3 text-sm" />
-                  <input type="file" name="expFile" accept="image/*" className="w-full text-sm text-zinc-500" />
+
+                  {/* 🖼️ IMAGE VALIDATION UPLOAD FIELD RE-ADDED */}
+                  <div className="space-y-2">
+                    <label className="block text-xs font-mono font-bold uppercase text-zinc-400">Upload Certificate / Credential Asset</label>
+                    <input type="file" name="expFile" accept="image/*" className="w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-mono file:bg-amber-600/10 file:text-amber-400" />
+                  </div>
+
                   <button type="submit" className="w-full bg-amber-600 py-3 rounded-xl font-bold text-xs uppercase">
                     {editingExpId ? "UPDATE CREDENTIAL NODE" : "DEPLOY VALIDATION NODE"}
                   </button>
                   {editingExpId && (
-                    <button type="button" onClick={() => { setEditingExpId(null); setExpForm({ title: "", organization: "", type: "internship", duration: "", whatIDid: "", whatILearned: "", perks: "", verifyUrl: "", certImageUrl: "" }); }} className="w-full bg-zinc-800 py-2 rounded-xl text-xs mt-2">CANCEL EDIT</button>
+                    <button type="button" onClick={() => { setEditingExpId(null); // ✅ Update the reset state line inside handleExpSubmit to this:
+setExpForm({ title: "", organization: "", type: "internship", duration: "", projectScope: "", coreKnowledge: "", accolades: "", verifyUrl: "", certImageUrl: "" }); }} className="w-full bg-zinc-800 py-2 rounded-xl text-xs mt-2">CANCEL EDIT</button>
                   )}
                 </form>
 
@@ -459,11 +503,26 @@ export default function AdminPage() {
                         <div className="text-xs text-zinc-500">{exp.organization} • {exp.type}</div>
                       </div>
                       <div className="flex gap-2">
-                        <button onClick={() => { 
-                          setExpForm(exp); 
-                          setEditingExpId(exp.id); 
-                          window.scrollTo({top: 0, behavior: 'smooth'}); 
-                        }} className="px-3 py-1.5 bg-zinc-800 hover:bg-amber-500/20 hover:text-amber-400 rounded-lg text-xs font-bold transition-colors">Edit</button>
+                        // ✅ REPLACE WITH THIS COMPILING CONTROLLER:
+<button onClick={() => { 
+  const rawContent = exp.whatIDid || "";
+  const lines = rawContent.split('\n\n');
+  
+  setExpForm({
+    title: exp.title || "",
+    organization: exp.organization || "",
+    type: exp.type || "internship",
+    duration: exp.duration || "",
+    verifyUrl: exp.verifyUrl || "",
+    certImageUrl: exp.certImageUrl || "",
+    projectScope: lines[0]?.replace('Project Implementation & Scope:\n', '') || '',
+    coreKnowledge: lines[1]?.replace('Core Knowledge Acquired:\n', '') || '',
+    accolades: lines[2]?.replace('Validation Accolades & Badges:\n', '') || ''
+  }); 
+
+  setEditingExpId(exp.id); 
+  window.scrollTo({top: 0, behavior: 'smooth'}); 
+}} className="px-3 py-1.5 bg-zinc-800 hover:bg-amber-500/20 hover:text-amber-400 rounded-lg text-xs font-bold transition-colors">Edit</button>
                         <button onClick={() => handleDeleteNode("experiences", exp.id)} className="px-3 py-1.5 bg-red-900/20 hover:bg-red-500/20 text-red-400 rounded-lg text-xs font-bold transition-colors">Delete</button>
                       </div>
                     </div>
