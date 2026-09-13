@@ -43,7 +43,7 @@ export default function PolaroidStack({ items }: PolaroidStackProps) {
       url: "https://github.com/PURNIMA-SIRANGU" 
     },
     linkedin: { 
-      followers: "388 Followers", 
+      followers: "500+ Followers", 
       impressions: "23.4K Impressions", 
       url: "https://linkedin.com/in/purnima-sirangu-034017351" 
     }
